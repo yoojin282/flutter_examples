@@ -1,3 +1,4 @@
+import 'package:examples/constants.dart';
 import 'package:examples/screens/home_screen.dart';
 import 'package:examples/screens/naver_map_screen.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +7,7 @@ import 'package:go_router/go_router.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await NaverMapSdk.instance.initialize(clientId: '2vkiu8dsqb');
+  await NaverMapSdk.instance.initialize(clientId: Constants.mapKey);
   runApp(const MyApp());
 }
 
