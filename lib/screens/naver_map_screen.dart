@@ -10,12 +10,26 @@ class NaverMapScreen extends StatefulWidget {
 
 class _NaverMapScreenState extends State<NaverMapScreen> {
   // late final NaverMapController _mapController;
+  late final Image precachedImage;
+
+  @override
+  void initState() {
+    super.initState();
+    precachedImage = Image.asset("images/cloud_rain.png");
+  }
+
+  @override
+  void didChangeDependencies() {
+    precacheImage(precachedImage.image, context);
+    // precacheImage(SvgPicture.asset("assetName")., context);
+    super.didChangeDependencies();
+  }
 
   void _onMapCreated(NaverMapController controller) {
     // _mapController = controller;
 
     NOverlayImage.fromWidget(
-            widget: const _Overlay("흐리고 비"),
+            widget: _Overlay("흐리고 비", precachedImage),
             size: const Size(100, 200),
             context: context)
         .then(
@@ -48,8 +62,9 @@ class _NaverMapScreenState extends State<NaverMapScreen> {
 }
 
 class _Overlay extends StatelessWidget {
-  const _Overlay(this.text);
+  const _Overlay(this.text, this.precachedImage);
   final String text;
+  final Image precachedImage;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -64,8 +79,8 @@ class _Overlay extends StatelessWidget {
         const SizedBox(
           height: 8,
         ),
+        precachedImage,
         // SvgPicture.asset('images/cloud_rain.svg'),
-        Image.asset("images/cloud_rain.png"),
       ],
     );
   }
