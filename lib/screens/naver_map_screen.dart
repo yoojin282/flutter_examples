@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class NaverMapScreen extends StatefulWidget {
   const NaverMapScreen({super.key});
@@ -10,10 +9,10 @@ class NaverMapScreen extends StatefulWidget {
 }
 
 class _NaverMapScreenState extends State<NaverMapScreen> {
-  late final NaverMapController _mapController;
+  // late final NaverMapController _mapController;
 
   void _onMapCreated(NaverMapController controller) {
-    _mapController = controller;
+    // _mapController = controller;
 
     NOverlayImage.fromWidget(
             widget: const _Overlay("흐리고 비"),
