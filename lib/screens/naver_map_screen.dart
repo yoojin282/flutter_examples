@@ -10,18 +10,21 @@ class NaverMapScreen extends StatefulWidget {
 
 class _NaverMapScreenState extends State<NaverMapScreen> {
   late final NaverMapController _mapController;
-  late final Image precachedImage;
+  late final Image _precachedImage;
+  late final Image _barImage;
   final _position = const NLatLng(37, 127);
 
   @override
   void initState() {
     super.initState();
-    precachedImage = Image.asset("images/cloud_rain.png");
+    _precachedImage = Image.asset("images/cloud_rain.png");
+    _barImage = Image.asset("images/bar.png");
   }
 
   @override
   void didChangeDependencies() {
-    precacheImage(precachedImage.image, context);
+    precacheImage(_precachedImage.image, context);
+    precacheImage(_barImage.image, context);
     super.didChangeDependencies();
   }
 
@@ -29,7 +32,7 @@ class _NaverMapScreenState extends State<NaverMapScreen> {
     _mapController = controller;
 
     NOverlayImage.fromWidget(
-            widget: _Overlay("흐리고 비", precachedImage),
+            widget: _Overlay("흐리고 비", _precachedImage),
             size: const Size(100, 200),
             context: context)
         .then(
@@ -38,7 +41,7 @@ class _NaverMapScreenState extends State<NaverMapScreen> {
           NMarker(
             id: "sample1",
             // size: const Size(100, 200),
-            position: const NLatLng(37, 127),
+            position: _position.offsetByMeter(northMeter: -100),
             icon: overlayImage,
             // anchor: const NPoint(0.1, 0.7),
           ),
@@ -49,14 +52,32 @@ class _NaverMapScreenState extends State<NaverMapScreen> {
   }
 
   void _addOverlay() {
-    final marker = NMarker(
-      id: "marker1",
-      position: _position.offsetByMeter(eastMeter: 0),
+    // final marker = NMarker(
+    //   id: "marker1",
+    //   position: _position.offsetByMeter(eastMeter: 0),
+    //   size: const Size(24, 32),
+    //   anchor: const NPoint(0.5, 0.5),
+    //   icon: const NOverlayImage.fromAssetImage('images/bar.png'),
+    // );
+    // _mapController.addOverlay(marker);
+
+    // NOverlayImage.fromAssetImage 으로는 이미지 해상도가 맞지 않아 fromWidget 으로
+    NOverlayImage.fromWidget(
+      widget: Container(
+        child: _barImage,
+      ),
       size: const Size(24, 32),
-      anchor: const NPoint(0.5, 0.5),
-      icon: const NOverlayImage.fromAssetImage('images/bar.png'),
-    );
-    _mapController.addOverlay(marker);
+      context: context,
+    ).then((overlay) {
+      final marker = NMarker(
+        id: "marker1",
+        position: _position,
+        size: const Size(24, 32),
+        anchor: const NPoint(0.5, 0.5),
+        icon: overlay,
+      );
+      _mapController.addOverlay(marker);
+    });
   }
 
   @override
