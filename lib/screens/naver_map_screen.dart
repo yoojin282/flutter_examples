@@ -9,8 +9,9 @@ class NaverMapScreen extends StatefulWidget {
 }
 
 class _NaverMapScreenState extends State<NaverMapScreen> {
-  // late final NaverMapController _mapController;
+  late final NaverMapController _mapController;
   late final Image precachedImage;
+  final _position = const NLatLng(37, 127);
 
   @override
   void initState() {
@@ -21,12 +22,11 @@ class _NaverMapScreenState extends State<NaverMapScreen> {
   @override
   void didChangeDependencies() {
     precacheImage(precachedImage.image, context);
-    // precacheImage(SvgPicture.asset("assetName")., context);
     super.didChangeDependencies();
   }
 
   void _onMapCreated(NaverMapController controller) {
-    // _mapController = controller;
+    _mapController = controller;
 
     NOverlayImage.fromWidget(
             widget: _Overlay("흐리고 비", precachedImage),
@@ -37,7 +37,7 @@ class _NaverMapScreenState extends State<NaverMapScreen> {
         return controller.addOverlay(
           NMarker(
             id: "sample1",
-            size: const Size(100, 200),
+            // size: const Size(100, 200),
             position: const NLatLng(37, 127),
             icon: overlayImage,
             // anchor: const NPoint(0.1, 0.7),
@@ -45,6 +45,18 @@ class _NaverMapScreenState extends State<NaverMapScreen> {
         );
       },
     );
+    _addOverlay();
+  }
+
+  void _addOverlay() {
+    final marker = NMarker(
+      id: "marker1",
+      position: _position.offsetByMeter(eastMeter: 0),
+      size: const Size(24, 32),
+      anchor: const NPoint(0.5, 0.5),
+      icon: const NOverlayImage.fromAssetImage('images/bar.png'),
+    );
+    _mapController.addOverlay(marker);
   }
 
   @override
@@ -52,9 +64,8 @@ class _NaverMapScreenState extends State<NaverMapScreen> {
     return Scaffold(
       body: NaverMap(
         onMapReady: _onMapCreated,
-        options: const NaverMapViewOptions(
-          initialCameraPosition:
-              NCameraPosition(target: NLatLng(37, 127), zoom: 14),
+        options: NaverMapViewOptions(
+          initialCameraPosition: NCameraPosition(target: _position, zoom: 14),
         ),
       ),
     );
