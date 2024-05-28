@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
+import 'package:go_router/go_router.dart';
 
 class NaverMapScreen extends StatefulWidget {
   const NaverMapScreen({super.key});
@@ -40,10 +41,8 @@ class _NaverMapScreenState extends State<NaverMapScreen> {
         return controller.addOverlay(
           NMarker(
             id: "sample1",
-            // size: const Size(100, 200),
             position: _position.offsetByMeter(northMeter: -100),
             icon: overlayImage,
-            // anchor: const NPoint(0.1, 0.7),
           ),
         );
       },
@@ -52,15 +51,6 @@ class _NaverMapScreenState extends State<NaverMapScreen> {
   }
 
   void _addOverlay() {
-    // final marker = NMarker(
-    //   id: "marker1",
-    //   position: _position.offsetByMeter(eastMeter: 0),
-    //   size: const Size(24, 32),
-    //   anchor: const NPoint(0.5, 0.5),
-    //   icon: const NOverlayImage.fromAssetImage('images/bar.png'),
-    // );
-    // _mapController.addOverlay(marker);
-
     // NOverlayImage.fromAssetImage 으로는 이미지 해상도가 맞지 않아 fromWidget 으로
     NOverlayImage.fromWidget(
       widget: Container(
@@ -73,7 +63,7 @@ class _NaverMapScreenState extends State<NaverMapScreen> {
         id: "marker1",
         position: _position,
         size: const Size(24, 32),
-        anchor: const NPoint(0.5, 0.5),
+        anchor: const NPoint(0.5, 0),
         icon: overlay,
       );
       _mapController.addOverlay(marker);
@@ -83,6 +73,18 @@ class _NaverMapScreenState extends State<NaverMapScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton.filled(
+          onPressed: () => context.pop(),
+          icon: const Icon(
+            Icons.arrow_back,
+            color: Colors.black54,
+          ),
+        ),
+      ),
       body: NaverMap(
         onMapReady: _onMapCreated,
         options: NaverMapViewOptions(
