@@ -16,9 +16,9 @@ class HomeScreen extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
           children: [
             _ScreenListItem(
-              title: "flutter_naver_map",
+              title: "Flutter Naver Map",
               onTap: () => context.pushNamed("naver_map"),
-            )
+            ),
           ],
         ),
       ),
